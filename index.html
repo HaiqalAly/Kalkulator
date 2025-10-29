@@ -131,7 +131,6 @@
     $(document).ready(function() {
       let expression = "";
 
-      // Saat tombol angka atau operator diklik
       $(".btn-number, .btn-operator").click(function() {
         const value = $(this).text();
         if (expression === "0") expression = "";
@@ -139,16 +138,13 @@
         $("#result").text(expression);
       });
 
-      // Tombol clear
       $(".btn-clear").click(function() {
         expression = "";
         $("#result").text("0");
       });
 
-      // Tombol sama dengan
       $(".btn-equal").click(function() {
         try {
-          // Ganti % dengan modulus operator JS
           const result = eval(expression.replace(/%/g, '%'));
           $("#result").text(result);
           expression = result.toString();
