@@ -128,33 +128,48 @@
   </div>
 
   <script>
-    $(document).ready(function() {
-      let expression = "";
+  $(document).ready(function() {
+    let expression = "";
 
-      $(".btn-number, .btn-operator").click(function() {
-        const value = $(this).text();
-        if (expression === "0") expression = "";
-        expression += value;
-        $("#result").text(expression);
-      });
-
-      $(".btn-clear").click(function() {
-        expression = "";
-        $("#result").text("0");
-      });
-
-      $(".btn-equal").click(function() {
-        try {
-          const result = eval(expression.replace(/%/g, '%'));
-          $("#result").text(result);
-          expression = result.toString();
-        } catch {
-          $("#result").text("Error");
-          expression = "";
-        }
-      });
+    // Add input when number or operator is clicked
+    $(".btn-number, .btn-operator").click(function() {
+      const value = $(this).text();
+      if (expression === "0") expression = "";
+      expression += value;
+      $("#result").text(expression);
     });
-  </script>
+
+    // Clear button
+    $(".btn-clear").click(function() {
+      expression = "";
+      $("#result").text("0");
+    });
+
+    // Equal button
+    $(".btn-equal").click(function() {
+      try {
+        // Handle ++ and -- manually before evaluation
+        let processed = expression;
+
+        // Replace occurrences like "7++" → "(7+1)"
+        processed = processed.replace(/(\d+)\+\+/g, "($1+1)");
+
+        // Replace occurrences like "7--" → "(7-1)"
+        processed = processed.replace(/(\d+)\-\-/g, "($1-1)");
+
+        // Evaluate the result
+        const result = eval(processed);
+
+        $("#result").text(result);
+        expression = result.toString();
+      } catch {
+        $("#result").text("Error");
+        expression = "";
+      }
+    });
+  });
+</script>
+
 
 </body>
 </html>
